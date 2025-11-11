@@ -397,11 +397,36 @@
 
         .timeline-content {
             background: var(--dark);
-            padding: 2rem;
+            padding: 0;
             border-radius: 15px;
             border: 1px solid rgba(0, 102, 255, 0.2);
             width: calc(50% - 40px);
             position: relative;
+            overflow: hidden;
+        }
+
+        .timeline-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .timeline-image-placeholder {
+            width: 100%;
+            height: 180px;
+            background: linear-gradient(135deg, rgba(0, 102, 255, 0.1), rgba(0, 212, 255, 0.1));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray);
+            font-style: italic;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .timeline-text {
+            padding: 2rem;
         }
 
         .timeline-item:nth-child(odd) .timeline-content {
@@ -1029,28 +1054,44 @@
             <div class="timeline">
                 <div class="timeline-item">
                     <div class="timeline-content">
-                        <h3>Mastère Expert en Systèmes Cloud</h3>
-                        <span class="date">2024 - 2026 | École PMN, Nanterre</span>
-                        <p>Formation en alternance (1 semaine école / 3 semaines entreprise) axée sur l'architecture cloud, la sécurité, l'automatisation et les infrastructures distribuées.</p>
+                        <img src="img/ecole-pmn.jpg" alt="École PMN" class="timeline-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="timeline-image-placeholder" style="display: none;">Image de École PMN manquante</div>
+                        <div class="timeline-text">
+                            <h3>Mastère Expert en Systèmes Cloud</h3>
+                            <span class="date">2024 - 2026 | École PMN, Nanterre</span>
+                            <p>Formation en alternance (1 semaine école / 3 semaines entreprise) axée sur l'architecture cloud, la sécurité, l'automatisation et les infrastructures distribuées.</p>
+                        </div>
                     </div>
                 </div>
                 <div class="timeline-item">
                     <div class="timeline-content">
-                        <h3>Bachelor Administrateur Systèmes DevOps</h3>
-                        <span class="date">2023 - 2024 | École PMN, Nanterre</span>
-                        <p>Formation complète en administration système, réseaux, DevOps et cloud computing avec certification RNCP Niveau 6.</p>
+                        <img src="img/ecole-pmn.jpg" alt="École PMN" class="timeline-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="timeline-image-placeholder" style="display: none;">Image de École PMN manquante</div>
+                        <div class="timeline-text">
+                            <h3>Bachelor Administrateur Systèmes DevOps</h3>
+                            <span class="date">2023 - 2024 | École PMN, Nanterre</span>
+                            <p>Formation complète en administration système, réseaux, DevOps et cloud computing avec certification RNCP Niveau 6.</p>
+                        </div>
                     </div>
                 </div>
                 <div class="timeline-item">
                     <div class="timeline-content">
-                        <h3>BTS SNIR - Systèmes Numériques</h3>
-                        <span class="date">2021 - 2023 | Lycée Diderot Paris</span>
-                        <p>Technologie informatique et systèmes informatiques avec spécialisation en réseaux et infrastructure.</p>
+                        <img src="img/lycee-diderot.jpg" alt="Lycée Diderot Paris" class="timeline-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="timeline-image-placeholder" style="display: none;">Image de Lycée Diderot Paris manquante</div>
+                        <div class="timeline-text">
+                            <h3>BTS SNIR - Systèmes Numériques</h3>
+                            <span class="date">2021 - 2023 | Lycée Diderot Paris</span>
+                            <p>Technologie informatique et systèmes informatiques avec spécialisation en réseaux et infrastructure.</p>
+                        </div>
                     </div>
                     <div class="timeline-content">
-                        <h3>Stage - Loxam</h3>
-                        <span class="date">2022 | Puteaux</span>
-                        <p>Résolution d'incidents d'authentification, support technique et intégration SSO (Okta Mobile).</p>
+                        <img src="img/loxam.jpg" alt="Loxam Puteaux" class="timeline-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="timeline-image-placeholder" style="display: none;">Image de Loxam Puteaux manquante</div>
+                        <div class="timeline-text">
+                            <h3>Stage - Loxam</h3>
+                            <span class="date">2022 | Puteaux</span>
+                            <p>Résolution d'incidents d'authentification, support technique et intégration SSO (Okta Mobile).</p>
+                        </div>
                     </div>
                 </div>
             </div>
