@@ -327,6 +327,92 @@
             font-weight: bold;
         }
 
+        /* Code display */
+        .code-section {
+            margin: 2rem 0;
+        }
+
+        .code-section h4 {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .code-container {
+            background: var(--darker);
+            border: 1px solid rgba(0, 102, 255, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .code-header {
+            background: rgba(0, 102, 255, 0.2);
+            padding: 0.75rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 102, 255, 0.3);
+        }
+
+        .code-filename {
+            color: var(--light);
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+
+        .copy-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.4rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            background: var(--secondary);
+        }
+
+        .code-content {
+            padding: 1rem;
+            overflow-x: auto;
+        }
+
+        .code-content pre {
+            margin: 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: var(--light);
+        }
+
+        .code-content code {
+            color: var(--light);
+        }
+
+        /* Syntax highlighting colors */
+        .keyword { color: #ff79c6; }
+        .string { color: #50fa7b; }
+        .comment { color: #6272a4; font-style: italic; }
+        .function { color: #8be9fd; }
+        .number { color: #bd93f9; }
+
+        .project-description {
+            background: rgba(0, 102, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
+            margin-bottom: 2rem;
+        }
+
+        .project-description p {
+            color: var(--light);
+            line-height: 1.8;
+            margin: 0;
+        }
+
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
@@ -552,6 +638,7 @@
             overflow: hidden;
             border: 1px solid rgba(0, 102, 255, 0.2);
             transition: all 0.3s ease;
+            cursor: pointer;
         }
 
         .project-card:hover {
@@ -765,6 +852,23 @@
             const modal = document.getElementById(modalType + 'Modal');
             modal.classList.remove('active');
             document.body.style.overflow = 'auto';
+        }
+
+        function copyCode(codeId) {
+            const codeElement = document.getElementById(codeId);
+            const text = codeElement.textContent;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.textContent = '✓ Copié !';
+                btn.style.background = '#50fa7b';
+                
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.style.background = '';
+                }, 2000);
+            });
         }
 
         // Fermer avec la touche Échap
@@ -1105,7 +1209,22 @@
         <div class="container">
             <h2 class="section-title">Projets Réalisés</h2>
             <div class="projects-grid">
-                <div class="project-card">
+                <div class="project-card" onclick="openModal('poulailler')">
+                    <div class="project-header">
+                        <div class="project-icon">🏠</div>
+                    </div>
+                    <div class="project-content">
+                        <h3>Poulailler Connecté IoT</h3>
+                        <p>Développement d'un système intelligent de gestion de température avec conception matérielle et logicielle complète, programmation de microcontrôleurs et intégration de capteurs environnementaux.</p>
+                        <div class="project-tags">
+                            <span class="tag">IoT</span>
+                            <span class="tag">Python</span>
+                            <span class="tag">Capteurs</span>
+                            <span class="tag">Microcontrôleur</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card" onclick="openModal('cloud-infra')">
                     <div class="project-header">
                         <div class="project-icon">☁️</div>
                     </div>
@@ -1121,24 +1240,185 @@
                         </div>
                     </div>
                 </div>
-                <div class="project-card">
-                    <div class="project-header">
-                        <div class="project-icon">🏠</div>
-                    </div>
-                    <div class="project-content">
-                        <h3>Poulailler Connecté IoT</h3>
-                        <p>Développement d'un système intelligent de gestion de température avec conception matérielle et logicielle complète, programmation de microcontrôleurs et intégration de capteurs environnementaux.</p>
-                        <div class="project-tags">
-                            <span class="tag">IoT</span>
-                            <span class="tag">Python</span>
-                            <span class="tag">Capteurs</span>
-                            <span class="tag">Microcontrôleur</span>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
+
+    <!-- Project Modals -->
+    <div id="poulaillerModal" class="modal" onclick="closeModal('poulailler')">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h2>🏠 Poulailler Connecté IoT</h2>
+                <button class="close-btn" onclick="closeModal('poulailler')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="project-description">
+                    <p><strong>Mon rôle :</strong> Je devais gérer la partie température. Ma mission était de prendre les données d'un capteur de température, les envoyer sur le site web pour afficher la température en temps réel, et contrôler le chauffage de l'abreuvoir pour que les poules puissent s'hydrater même en hiver.</p>
+                </div>
+
+                <div class="tool-section">
+                    <h3>Contexte du Projet</h3>
+                    <p>Projet de fin de BTS SNIR visant à créer un poulailler intelligent avec monitoring de température et gestion automatisée du chauffage de l'abreuvoir.</p>
+                    <ul>
+                        <li>Lecture de données depuis un capteur de température TMP102 via I2C</li>
+                        <li>Transmission des données vers un serveur web</li>
+                        <li>Contrôle automatique du système de chauffage de l'abreuvoir</li>
+                        <li>Interface web pour visualisation en temps réel</li>
+                    </ul>
+                </div>
+
+                <div class="tool-section">
+                    <h3>Technologies Utilisées</h3>
+                    <ul>
+                        <li><strong>Python</strong> : Programmation du système de lecture de température</li>
+                        <li><strong>Capteur TMP102</strong> : Mesure précise de la température via protocole I2C</li>
+                        <li><strong>Raspberry Pi</strong> : Microcontrôleur pour l'exécution du code et contrôle</li>
+                        <li><strong>SMBus</strong> : Communication I2C avec le capteur</li>
+                        <li><strong>GPIO</strong> : Contrôle du système de chauffage</li>
+                    </ul>
+                </div>
+
+                <div class="code-section">
+                    <h4>📄 Code Source - Lecture du Capteur de Température</h4>
+                    <div class="code-container">
+                        <div class="code-header">
+                            <span class="code-filename">temperature_sensor.py</span>
+                            <button class="copy-btn" onclick="copyCode('poulailler-code')">Copier</button>
+                        </div>
+                        <div class="code-content">
+                            <pre id="poulailler-code"><code>import time
+import smbus
+
+i2c_ch = 1
+
+# TMP102 address on the I2C bus
+i2c_address = 0x48
+
+# Register addresses
+reg_temp = 0x00
+reg_config = 0x01
+
+# Calculate the 2's complement of a number
+def twos_comp(val, bits):
+    if (val & (1 << (bits - 1))) != 0:
+        val = val - (1 << bits)
+    return val
+
+# Read temperature registers and calculate Celsius
+def read_temp():
+    # Read temperature registers
+    val = bus.read_i2c_block_data(i2c_address, reg_temp, 2)
+    
+    temp_c = (val[0] << 4) | (val[1] >> 4)
+    
+    # Convert to 2s complement (temperatures can be negative)
+    temp_c = twos_comp(temp_c, 12)
+    
+    # Convert registers value to temperature (C)
+    temp_c = temp_c * 0.0625
+    
+    return temp_c
+
+# Initialize I2C (SMBus)
+bus = smbus.SMBus(i2c_ch)
+
+# Read the CONFIG register (2 bytes)
+val = bus.read_i2c_block_data(i2c_address, reg_config, 2)
+print("Old CONFIG:", val)
+
+# Set to 8 Hz sampling (CR1, CR0 = 0b11)
+val[1] = val[1] & 0b00111111
+val[1] = val[1] | (0b11 << 6)
+
+# Write 8 Hz sampling back to CONFIG
+bus.write_i2c_block_data(i2c_address, reg_config, val)
+
+# Read CONFIG to verify that we changed it
+val = bus.read_i2c_block_data(i2c_address, reg_config, 2)
+print("New CONFIG:", val)
+
+# Print out temperature every second
+while True:
+    temperature = read_temp()
+    temp_f = temperature * (9 / 5) + 32
+    print(round(temp_f, 2), "F")
+    time.sleep(1)</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-section">
+                    <h3>Fonctionnalités Clés du Code</h3>
+                    <ul>
+                        <li><strong>Communication I2C</strong> : Utilisation du bus SMBus pour communiquer avec le capteur TMP102</li>
+                        <li><strong>Configuration du capteur</strong> : Réglage de la fréquence d'échantillonnage à 8 Hz pour des lectures rapides</li>
+                        <li><strong>Conversion de données</strong> : Traitement des registres 12 bits avec complément à 2 pour gérer les températures négatives</li>
+                        <li><strong>Précision</strong> : Résolution de 0.0625°C par bit</li>
+                        <li><strong>Lecture continue</strong> : Boucle infinie pour monitoring constant</li>
+                    </ul>
+                </div>
+
+                <div class="tool-section">
+                    <h3>Résultats et Apprentissages</h3>
+                    <ul>
+                        <li>Maîtrise de la communication I2C avec des capteurs physiques</li>
+                        <li>Compréhension des protocoles de communication bas niveau</li>
+                        <li>Programmation Python pour l'IoT et systèmes embarqués</li>
+                        <li>Intégration matériel/logiciel pour une solution complète</li>
+                        <li>Gestion de projet en équipe avec spécialisation des rôles</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="cloud-infraModal" class="modal" onclick="closeModal('cloud-infra')">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h2>☁️ Infrastructure Cloud Automatisée</h2>
+                <button class="close-btn" onclick="closeModal('cloud-infra')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="tool-section">
+                    <h3>Description du Projet</h3>
+                    <p>Conception et déploiement complet d'une infrastructure cloud automatisée sur Microsoft Azure pour héberger une application web PHP avec base de données MariaDB.</p>
+                </div>
+
+                <div class="tool-section">
+                    <h3>Architecture</h3>
+                    <ul>
+                        <li><strong>Containerisation Docker</strong> : Application PHP et MariaDB dans des conteneurs séparés</li>
+                        <li><strong>Azure Cloud Services</strong> : Déploiement sur infrastructure IaaS Azure</li>
+                        <li><strong>Orchestration</strong> : Docker Compose pour la gestion multi-conteneurs</li>
+                        <li><strong>Sécurité</strong> : Groupes de sécurité Azure, certificats SSL/TLS</li>
+                        <li><strong>Supervision</strong> : Prometheus pour le monitoring des services</li>
+                    </ul>
+                </div>
+
+                <div class="tool-section">
+                    <h3>Automatisation</h3>
+                    <ul>
+                        <li><strong>Ansible</strong> : Playbooks pour le provisioning et la configuration automatique</li>
+                        <li><strong>Scripts Bash</strong> : Automatisation des déploiements et mises à jour</li>
+                        <li><strong>Infrastructure as Code</strong> : Configuration versionnée et reproductible</li>
+                        <li><strong>CI/CD</strong> : Pipeline de déploiement automatisé</li>
+                    </ul>
+                </div>
+
+                <div class="tool-section">
+                    <h3>Compétences Développées</h3>
+                    <ul>
+                        <li>Architecture cloud et services Azure</li>
+                        <li>Containerisation et orchestration Docker</li>
+                        <li>Automatisation avec Ansible</li>
+                        <li>Sécurisation d'infrastructures cloud</li>
+                        <li>Monitoring et supervision avec Prometheus</li>
+                        <li>Scripting et automatisation avancée</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <section id="contact">
         <div class="container">
