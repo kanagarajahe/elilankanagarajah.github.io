@@ -236,21 +236,23 @@
             max-width: 800px;
             width: 100%;
             max-height: 90vh;
-            overflow-y: auto;
+            overflow: hidden;
             position: relative;
             animation: slideUp 0.3s ease;
+            display: flex;
+            flex-direction: column;
         }
 
         .modal-header {
-            background: linear-gradient(135deg, rgba(0, 102, 255, 0.2), rgba(0, 212, 255, 0.2));
+            background: linear-gradient(135deg, rgba(0, 102, 255, 0.3), rgba(0, 212, 255, 0.3));
+            backdrop-filter: blur(10px);
             padding: 2rem;
-            border-radius: 20px 20px 0 0;
-            position: sticky;
-            top: 0;
-            z-index: 10;
+            border-radius: 18px 18px 0 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-shrink: 0;
+            border-bottom: 1px solid rgba(0, 102, 255, 0.3);
         }
 
         .modal-header h2 {
@@ -281,6 +283,8 @@
 
         .modal-body {
             padding: 2rem;
+            overflow-y: auto;
+            flex: 1;
         }
 
         .tool-section {
