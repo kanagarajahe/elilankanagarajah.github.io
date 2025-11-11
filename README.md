@@ -1,1 +1,645 @@
 # elilankanagarajah.github.io
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elilan Kanagarajah - Expert Systèmes Cloud</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0066ff;
+            --secondary: #00d4ff;
+            --dark: #0a0e27;
+            --darker: #050818;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--darker);
+            color: var(--light);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header/Hero */
+        header {
+            background: linear-gradient(135deg, var(--dark) 0%, var(--darker) 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(0, 102, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 212, 255, 0.1) 0%, transparent 50%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 1s ease-out;
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .profile-section {
+            flex-shrink: 0;
+        }
+
+        .profile-photo {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 4px solid var(--primary);
+            box-shadow: 0 0 40px rgba(0, 102, 255, 0.4);
+            object-fit: cover;
+            display: block;
+        }
+
+        .profile-initials {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 4px solid var(--primary);
+            box-shadow: 0 0 40px rgba(0, 102, 255, 0.4);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .hero-text {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .hero-content h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-content h2 {
+            font-size: 1.5rem;
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+            font-weight: 400;
+        }
+
+        .hero-content p {
+            font-size: 1.1rem;
+            color: var(--gray);
+            margin-bottom: 2rem;
+            max-width: 600px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 102, 255, 0.4);
+        }
+
+        .btn-secondary {
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Sections */
+        section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            margin: 20px auto;
+            border-radius: 2px;
+        }
+
+        /* Compétences */
+        #competences {
+            background: var(--dark);
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .skill-card {
+            background: var(--darker);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid rgba(0, 102, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(0, 102, 255, 0.2);
+        }
+
+        .skill-card h3 {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .skill-card ul {
+            list-style: none;
+        }
+
+        .skill-card li {
+            padding: 0.5rem 0;
+            color: var(--gray);
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .skill-card li::before {
+            content: '▹';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        /* Parcours */
+        #parcours {
+            background: var(--darker);
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--primary), var(--secondary));
+        }
+
+        .timeline-item {
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .timeline-content {
+            background: var(--dark);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid rgba(0, 102, 255, 0.2);
+            width: calc(50% - 40px);
+            position: relative;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content {
+            margin-left: auto;
+        }
+
+        .timeline-content::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            width: 20px;
+            height: 20px;
+            background: var(--primary);
+            border-radius: 50%;
+            border: 3px solid var(--darker);
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content::before {
+            left: -50px;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content::before {
+            right: -50px;
+        }
+
+        .timeline-content h3 {
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-content .date {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .timeline-content p {
+            color: var(--gray);
+        }
+
+        /* Projets */
+        #projets {
+            background: var(--dark);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background: var(--darker);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 102, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 102, 255, 0.3);
+        }
+
+        .project-header {
+            background: linear-gradient(135deg, rgba(0, 102, 255, 0.2), rgba(0, 212, 255, 0.2));
+            padding: 2rem;
+            min-height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .project-icon {
+            font-size: 3rem;
+        }
+
+        .project-content {
+            padding: 2rem;
+        }
+
+        .project-content h3 {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+
+        .project-content p {
+            color: var(--gray);
+            margin-bottom: 1rem;
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .tag {
+            background: rgba(0, 102, 255, 0.2);
+            color: var(--secondary);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+
+        /* Contact */
+        #contact {
+            background: var(--darker);
+        }
+
+        .contact-info {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--light);
+            text-decoration: none;
+            padding: 1rem 2rem;
+            background: var(--dark);
+            border-radius: 10px;
+            border: 1px solid rgba(0, 102, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .contact-link:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            padding: 2rem 0;
+            text-align: center;
+            color: var(--gray);
+            border-top: 1px solid rgba(0, 102, 255, 0.2);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .profile-photo,
+            .profile-initials {
+                width: 150px;
+                height: 150px;
+            }
+
+            .profile-initials {
+                font-size: 3rem;
+            }
+
+            .timeline::before {
+                left: 20px;
+            }
+
+            .timeline-content {
+                width: calc(100% - 60px);
+                margin-left: 60px !important;
+            }
+
+            .timeline-item:nth-child(odd) .timeline-content::before,
+            .timeline-item:nth-child(even) .timeline-content::before {
+                left: -50px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="hero-content">
+                <div class="profile-section">
+                    <img src="/img/photoprofil.png" alt="Elilan Kanagarajah" class="profile-photo" id="profilePhoto" onerror="showInitials()">
+                    <div class="profile-initials" id="profileInitials" style="display: none;">EK</div>
+                </div>
+                <div class="hero-text">
+                    <h1>Elilan Kanagarajah</h1>
+                    <h2>Administrateur Systèmes & Cloud Computing</h2>
+                    <p>Étudiant en Mastère Expert en Systèmes Cloud, passionné par l'infrastructure cloud, l'automatisation et les technologies DevOps. Je combine apprentissage avancé et expérience pratique pour créer des solutions innovantes.</p>
+                    <div class="cta-buttons">
+                        <a href="#contact" class="btn btn-primary">Me contacter</a>
+                        <a href="#projets" class="btn btn-secondary">Voir mes projets</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <script>
+        function showInitials() {
+            document.getElementById('profilePhoto').style.display = 'none';
+            document.getElementById('profileInitials').style.display = 'flex';
+        }
+    </script>
+
+    <section id="competences">
+        <div class="container">
+            <h2 class="section-title">Compétences Techniques</h2>
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <h3>☁️ Cloud Computing</h3>
+                    <ul>
+                        <li>Microsoft Azure (IAAS/PAAS, AKS)</li>
+                        <li>AWS (EC2, S3, IAM, RDS)</li>
+                        <li>VMware & Hyper-V</li>
+                        <li>Azure DevOps</li>
+                        <li>Cloud Hybride</li>
+                    </ul>
+                </div>
+                <div class="skill-card">
+                    <h3>🖥️ Administration Système</h3>
+                    <ul>
+                        <li>Windows Server (2016-2022)</li>
+                        <li>Active Directory & GPO</li>
+                        <li>DNS/DHCP/DFS</li>
+                        <li>PowerShell Scripting</li>
+                        <li>Linux Administration</li>
+                    </ul>
+                </div>
+                <div class="skill-card">
+                    <h3>🔧 DevOps & Automatisation</h3>
+                    <ul>
+                        <li>Docker & Kubernetes</li>
+                        <li>CI/CD (Jenkins, GitLab)</li>
+                        <li>Ansible & Terraform</li>
+                        <li>Git/GitHub</li>
+                        <li>Bash & Python</li>
+                    </ul>
+                </div>
+                <div class="skill-card">
+                    <h3>📊 Data & Monitoring</h3>
+                    <ul>
+                        <li>SQL Server Administration</li>
+                        <li>MySQL/MariaDB</li>
+                        <li>MongoDB (Notions)</li>
+                        <li>Grafana & Prometheus</li>
+                        <li>Elasticsearch</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="parcours">
+        <div class="container">
+            <h2 class="section-title">Mon Parcours</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3>Mastère Expert en Systèmes Cloud</h3>
+                        <span class="date">2024 - 2026 | École PMN, Nanterre</span>
+                        <p>Formation en alternance (1 semaine école / 3 semaines entreprise) axée sur l'architecture cloud, la sécurité, l'automatisation et les infrastructures distribuées.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3>Bachelor Administrateur Systèmes DevOps</h3>
+                        <span class="date">2023 - 2024 | École PMN, Nanterre</span>
+                        <p>Formation complète en administration système, réseaux, DevOps et cloud computing avec certification RNCP Niveau 6.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3>BTS SNIR - Systèmes Numériques</h3>
+                        <span class="date">2021 - 2023 | Lycée Diderot Paris</span>
+                        <p>Technologie informatique et systèmes informatiques avec spécialisation en réseaux et infrastructure.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3>Stage - Loxam</h3>
+                        <span class="date">2022 | Puteaux</span>
+                        <p>Résolution d'incidents d'authentification, support technique et intégration SSO (Okta Mobile).</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projets">
+        <div class="container">
+            <h2 class="section-title">Projets Réalisés</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-header">
+                        <div class="project-icon">☁️</div>
+                    </div>
+                    <div class="project-content">
+                        <h3>Infrastructure Cloud Automatisée</h3>
+                        <p>Conception et déploiement complet d'une infrastructure cloud sur Azure pour une application web PHP/MariaDB avec containerisation Docker, supervision Prometheus et automatisation Ansible.</p>
+                        <div class="project-tags">
+                            <span class="tag">Azure</span>
+                            <span class="tag">Docker</span>
+                            <span class="tag">Ansible</span>
+                            <span class="tag">Prometheus</span>
+                            <span class="tag">SSL</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-header">
+                        <div class="project-icon">🏠</div>
+                    </div>
+                    <div class="project-content">
+                        <h3>Poulailler Connecté IoT</h3>
+                        <p>Développement d'un système intelligent de gestion de température avec conception matérielle et logicielle complète, programmation de microcontrôleurs et intégration de capteurs environnementaux.</p>
+                        <div class="project-tags">
+                            <span class="tag">IoT</span>
+                            <span class="tag">Python</span>
+                            <span class="tag">Capteurs</span>
+                            <span class="tag">Microcontrôleur</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="container">
+            <h2 class="section-title">Contactez-moi</h2>
+            <div class="contact-info">
+                <p>Je suis actuellement en recherche d'opportunités en alternance pour mon Mastère Expert en Systèmes Cloud. N'hésitez pas à me contacter pour discuter de projets ou d'opportunités professionnelles.</p>
+                <div class="contact-links">
+                    <a href="mailto:kanagarajahe@gmail.com" class="contact-link">
+                        📧 kanagarajahe@gmail.com
+                    </a>
+                    <a href="tel:+33652398253" class="contact-link">
+                        📱 06 52 39 82 53
+                    </a>
+                    <a href="https://linkedin.com/in/elilan-kanagarajah" target="_blank" class="contact-link">
+                        💼 LinkedIn
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Elilan Kanagarajah - Tous droits réservés</p>
+        </div>
+    </footer>
+</body>
+</html>
