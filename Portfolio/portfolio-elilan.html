@@ -1308,70 +1308,136 @@
                 </div>
 
                 <div class="code-section">
-                    <h4>📄 Code Source - Lecture du Capteur de Température</h4>
+                    <h4>📄 Code Source - Système de Gestion de Température</h4>
                     <div class="code-container">
                         <div class="code-header">
-                            <span class="code-filename">temperature_sensor.py</span>
+                            <span class="code-filename">tpmp.py</span>
                             <button class="copy-btn" onclick="copyCode('poulailler-code')">Copier</button>
                         </div>
                         <div class="code-content">
-                            <pre id="poulailler-code"><code>import time
-import smbus
+                            <pre id="poulailler-code"><code>import smbus
+import time
+import sys
+from grovepi import *
 
-i2c_ch = 1
+def read():
+    return (bus.read_byte(address))
 
-# TMP102 address on the I2C bus
-i2c_address = 0x48
+# set backlight to (R,G,B) (values from 0..255 for each)
+def setRGB(r,g,b):
+    bus.write_byte_data(DISPLAY_RGB_ADDR,0,0)
+    bus.write_byte_data(DISPLAY_RGB_ADDR,1,0)
+    bus.write_byte_data(DISPLAY_RGB_ADDR,0x08,0xaa)
+    bus.write_byte_data(DISPLAY_RGB_ADDR,4,r)
+    bus.write_byte_data(DISPLAY_RGB_ADDR,3,g)
+    bus.write_byte_data(DISPLAY_RGB_ADDR,2,b)
 
-# Register addresses
-reg_temp = 0x00
-reg_config = 0x01
+# send command to display (no need for external use)    
+def textCommand(cmd):
+    bus.write_byte_data(DISPLAY_TEXT_ADDR,0x80,cmd)
 
-# Calculate the 2's complement of a number
-def twos_comp(val, bits):
-    if (val & (1 << (bits - 1))) != 0:
-        val = val - (1 << bits)
-    return val
+# set display text \n for second line(or auto wrap)     
+def setText(text):
+    textCommand(0x01) # clear display
+    time.sleep(.05)
+    textCommand(0x08 | 0x04) # display on, no cursor
+    textCommand(0x28) # 2 lines
+    time.sleep(.05)
+    count = 0
+    row = 0
+    for c in text:
+        if c == '\n' or count == 16:
+            count = 0
+            row += 1
+            if row == 2:
+                break
+            textCommand(0xc0)
+            if c == '\n':
+                continue
+        count += 1
+        bus.write_byte_data(DISPLAY_TEXT_ADDR,0x40,ord(c))
 
-# Read temperature registers and calculate Celsius
-def read_temp():
-    # Read temperature registers
-    val = bus.read_i2c_block_data(i2c_address, reg_temp, 2)
+# Update the display without erasing the display
+def setText_norefresh(text):
+    textCommand(0x02) # return home
+    time.sleep(.05)
+    textCommand(0x08 | 0x04) # display on, no cursor
+    textCommand(0x28) # 2 lines
+    time.sleep(.05)
+    count = 0
+    row = 0
+    while len(text) < 32: # clears the rest of the screen
+        text += ' '
+    for c in text:
+        if c == '\n' or count == 16:
+            count = 0
+            row += 1
+            if row == 2:
+                break
+            textCommand(0xc0)
+            if c == '\n':
+                continue
+        count += 1
+        bus.write_byte_data(DISPLAY_TEXT_ADDR,0x40,ord(c))
+
+# I2C addresses for the display
+DISPLAY_RGB_ADDR = 0x62
+DISPLAY_TEXT_ADDR = 0x3e
+
+if sys.platform == 'uwp':
+    import winrt_smbus as smbus
+    bus = smbus.SMBus(1)
+else:
+    import RPi.GPIO as GPIO
+    rev = GPIO.RPI_REVISION
+    if rev == 2 or rev == 3:
+        bus = smbus.SMBus(1)
+    else:
+        bus = smbus.SMBus(0)
+
+# Main program
+if __name__=="__main__":
+    bus = smbus.SMBus(1) # Initialize I2C bus
     
-    temp_c = (val[0] << 4) | (val[1] >> 4)
+    address = 0x4D # I2C address of TC74 sensor
     
-    # Convert to 2s complement (temperatures can be negative)
-    temp_c = twos_comp(temp_c, 12)
-    
-    # Convert registers value to temperature (C)
-    temp_c = temp_c * 0.0625
-    
-    return temp_c
+    # Connect Grove Switch on port D3 of GrovePi
+    switch = 3
 
-# Initialize I2C (SMBus)
-bus = smbus.SMBus(i2c_ch)
+    # Connect Grove Relay on port D4 of GrovePi
+    relay = 4
 
-# Read the CONFIG register (2 bytes)
-val = bus.read_i2c_block_data(i2c_address, reg_config, 2)
-print("Old CONFIG:", val)
+    # Configure Grove Switch as input
+    pinMode(switch,"INPUT")
 
-# Set to 8 Hz sampling (CR1, CR0 = 0b11)
-val[1] = val[1] & 0b00111111
-val[1] = val[1] | (0b11 << 6)
+    # Configure Grove Relay as output
+    pinMode(relay,"OUTPUT")
 
-# Write 8 Hz sampling back to CONFIG
-bus.write_i2c_block_data(i2c_address, reg_config, val)
+    while True:
+        try:
+            temperature = read()
+            
+            # Display temperature on LCD
+            setText_norefresh("Temp: {}°C".format(temperature))
+            
+            # Read Grove Switch state
+            switch_state = digitalRead(switch)
 
-# Read CONFIG to verify that we changed it
-val = bus.read_i2c_block_data(i2c_address, reg_config, 2)
-print("New CONFIG:", val)
+            if temperature > 21:
+                setRGB(0,255,0)  # Green light
+                digitalWrite(relay,1)  # Activate relay (heating)
+                print("Grove Relay activated")
+            else:
+                setRGB(255,0,0)  # Red light
+                digitalWrite(relay,0)  # Deactivate relay
+                print("Grove Relay deactivated")
+                
+            time.sleep(1)
 
-# Print out temperature every second
-while True:
-    temperature = read_temp()
-    temp_f = temperature * (9 / 5) + 32
-    print(round(temp_f, 2), "F")
-    time.sleep(1)</code></pre>
+        except:
+            setText_norefresh("STOP")
+            setRGB(150,0,0)
+            break</code></pre>
                         </div>
                     </div>
                 </div>
@@ -1379,11 +1445,24 @@ while True:
                 <div class="tool-section">
                     <h3>Fonctionnalités Clés du Code</h3>
                     <ul>
-                        <li><strong>Communication I2C</strong> : Utilisation du bus SMBus pour communiquer avec le capteur TMP102</li>
-                        <li><strong>Configuration du capteur</strong> : Réglage de la fréquence d'échantillonnage à 8 Hz pour des lectures rapides</li>
-                        <li><strong>Conversion de données</strong> : Traitement des registres 12 bits avec complément à 2 pour gérer les températures négatives</li>
-                        <li><strong>Précision</strong> : Résolution de 0.0625°C par bit</li>
-                        <li><strong>Lecture continue</strong> : Boucle infinie pour monitoring constant</li>
+                        <li><strong>Lecture du capteur TC74</strong> : Communication I2C pour obtenir la température en temps réel</li>
+                        <li><strong>Affichage LCD RGB</strong> : Affichage de la température sur un écran Grove avec rétroéclairage coloré</li>
+                        <li><strong>Système de régulation thermique</strong> : Activation automatique du relais (chauffage) si température < 21°C</li>
+                        <li><strong>Indicateurs visuels</strong> : Rétroéclairage vert (chaud) ou rouge (froid) selon la température</li>
+                        <li><strong>GrovePi</strong> : Utilisation de modules Grove pour simplifier les connexions matérielles</li>
+                        <li><strong>Gestion d'erreurs</strong> : Protection contre les défaillances avec messages d'arrêt</li>
+                    </ul>
+                </div>
+
+                <div class="tool-section">
+                    <h3>Composants Matériels</h3>
+                    <ul>
+                        <li><strong>Capteur TC74</strong> : Capteur de température numérique I2C</li>
+                        <li><strong>GrovePi</strong> : Shield pour Raspberry Pi facilitant les connexions Grove</li>
+                        <li><strong>Grove LCD RGB Backlight</strong> : Écran LCD 16x2 avec rétroéclairage RGB</li>
+                        <li><strong>Grove Relay</strong> : Relais pour contrôler le système de chauffage</li>
+                        <li><strong>Grove Switch</strong> : Interrupteur pour contrôle manuel</li>
+                        <li><strong>Raspberry Pi</strong> : Microcontrôleur central exécutant le code Python</li>
                     </ul>
                 </div>
 
