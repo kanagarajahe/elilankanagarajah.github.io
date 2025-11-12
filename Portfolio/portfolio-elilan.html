@@ -413,6 +413,19 @@
             margin: 0;
         }
 
+        .project-logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .project-logo img {
+            max-width: 300px;
+            height: auto;
+            border-radius: 10px;
+            padding: 1rem;
+            background: white;
+        }
+
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
@@ -653,10 +666,21 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
+            overflow: hidden;
         }
 
         .project-icon {
             font-size: 3rem;
+        }
+
+        .project-logo-img {
+            max-width: 120px;
+            height: 120px;
+            object-fit: contain;
+            border-radius: 50%;
+            background: white;
+            padding: 0.5rem;
         }
 
         .project-content {
@@ -1211,7 +1235,8 @@
             <div class="projects-grid">
                 <div class="project-card" onclick="openModal('poulailler')">
                     <div class="project-header">
-                        <div class="project-icon">🏠</div>
+                        <img src="img/logo-poulailler.png" alt="Poulailler Connecté" class="project-logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <div class="project-icon" style="display: none;">🏠</div>
                     </div>
                     <div class="project-content">
                         <h3>Poulailler Connecté IoT</h3>
@@ -1252,8 +1277,12 @@
                 <button class="close-btn" onclick="closeModal('poulailler')">×</button>
             </div>
             <div class="modal-body">
+                <div class="project-logo">
+                    <img src="img/logo-poulailler.png" alt="Logo Poulailler Connecté" onerror="this.style.display='none'">
+                </div>
+
                 <div class="project-description">
-                    <p><strong>Mon rôle :</strong> Je devais gérer la partie température. Ma mission était de prendre les données d'un capteur de température, les envoyer sur le site web pour afficher la température en temps réel, et contrôler le chauffage de l'abreuvoir pour que les poules puissent s'hydrater même en hiver.</p>
+                    <p><strong>Mon rôle :</strong> En charge de la gestion thermique du système, j'ai conçu et développé la solution de monitoring de température en temps réel. Mon périmètre incluait l'acquisition des données via capteur TMP102, leur transmission vers l'interface web développée par mon partenaire, ainsi que l'implémentation du système de régulation thermique de l'abreuvoir garantissant l'hydratation des volailles durant la période hivernale.</p>
                 </div>
 
                 <div class="tool-section">
